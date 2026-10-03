@@ -8,9 +8,9 @@ def caesar_cipher(input, shift_number)
   input_arr.each do |input_item|
     alphabet_arr.each_with_index do |alphabet_item, alphabet_index|
 
-      # alphabet_wrap_number is for determining how many times to loop alphabet_arr
-      # if alphabet_index + shift_number is higher than 26
-      alphabet_wrap_number = ((alphabet_index + shift_number) / 26).floor
+      # full_index is for determining how many times to loop alphabet_arr
+      # if it is higher than 25 (Not 26 because of array index shenanigans)
+      full_index = alphabet_index + shift_number
       input_item_is_alphabet = alphabet_arr.include?(input_item.downcase)
       input_item_is_upcase = input_item == alphabet_item.upcase
 
@@ -25,18 +25,18 @@ def caesar_cipher(input, shift_number)
 
       # Do we need to wrap/loop over the alphabet array? No? Then check for capitalization,
       # perform the caesar shift and push value to encrypted_arr
-      elsif alphabet_wrap_number <= 0 && input_item_is_alphabet
-        input_item_is_upcase ? encrypted_arr.push(alphabet_arr[alphabet_index + shift_number].upcase) :
-        encrypted_arr.push(alphabet_arr[alphabet_index + shift_number])
+      elsif full_index < 25 && input_item_is_alphabet
+        input_item_is_upcase ? encrypted_arr.push(alphabet_arr[full_index].upcase) :
+        encrypted_arr.push(alphabet_arr[full_index])
         break
 
-      # Do we need to wrap/loop over the alphabet array? Yes? Utilize alphabet_wrap_number in
+      # Do we need to wrap/loop over the alphabet array? Yes? Utilize full_index in
       # a loop to determine the correct shift value. Capitalization check after
-      elsif alphabet_wrap_number > 0 && input_item_is_alphabet
+      elsif full_index >= 25 && input_item_is_alphabet
         i = 0
-        alphabet_wrap_number.times do
-          if i > 26
-            i = 0
+        full_index.times do
+          if i >= 25
+            i = -1
           end
           i += 1
         end
@@ -49,8 +49,8 @@ def caesar_cipher(input, shift_number)
   end
   
   encrypted_text = encrypted_arr.join("")
-  puts encrypted_text
+  p encrypted_text
   encrypted_text
 end
 
-caesar_cipher("ZZZZZZZZZ", 1)
+caesar_cipher("What a string!", 5)

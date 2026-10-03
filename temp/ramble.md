@@ -24,3 +24,7 @@
 - When alphabet_index is greater than 26, set i back to 0. Keep adding one
 
 - When the loop is done you can then use i as the proper alphabet_index
+
+
+
+i = -1
