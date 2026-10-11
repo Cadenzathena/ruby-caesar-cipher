@@ -1,13 +1,11 @@
 # Right shift caesar cipher method!
 def caesar_cipher(input, shift_number)
-
-  alphabet_arr = "abcdefghijklmnopqrstuvwxyz".split("")
-  input_arr = input.split("")
-  encrypted_arr = Array.new
+  alphabet_arr = 'abcdefghijklmnopqrstuvwxyz'.split('')
+  input_arr = input.split('')
+  encrypted_arr = []
 
   input_arr.each do |input_item|
     alphabet_arr.each_with_index do |alphabet_item, alphabet_index|
-
       # full_index is for determining how many times to loop alphabet_arr
       # if it is higher than 25 (Not 26 because of array index shenanigans)
       full_index = alphabet_index + shift_number
@@ -26,8 +24,11 @@ def caesar_cipher(input, shift_number)
       # Do we need to wrap/loop over the alphabet array? No? Then check for capitalization,
       # perform the caesar shift and push value to encrypted_arr
       elsif full_index < 25 && input_item_is_alphabet
-        input_item_is_upcase ? encrypted_arr.push(alphabet_arr[full_index].upcase) :
-        encrypted_arr.push(alphabet_arr[full_index])
+        if input_item_is_upcase
+          encrypted_arr.push(alphabet_arr[full_index].upcase)
+        else
+          encrypted_arr.push(alphabet_arr[full_index])
+        end
         break
 
       # Do we need to wrap/loop over the alphabet array? Yes? Utilize full_index in
@@ -35,22 +36,22 @@ def caesar_cipher(input, shift_number)
       elsif full_index >= 25 && input_item_is_alphabet
         i = 0
         full_index.times do
-          if i >= 25
-            i = -1
-          end
+          i = -1 if i >= 25
           i += 1
         end
-        input_item_is_upcase ? encrypted_arr.push(alphabet_arr[i].upcase) :
-        encrypted_arr.push(alphabet_arr[i])
+        if input_item_is_upcase
+          encrypted_arr.push(alphabet_arr[i].upcase)
+        else
+          encrypted_arr.push(alphabet_arr[i])
+        end
         break
       end
-
     end
   end
-  
-  encrypted_text = encrypted_arr.join("")
+
+  encrypted_text = encrypted_arr.join('')
   p encrypted_text
   encrypted_text
 end
 
-caesar_cipher("What a string!", 5)
+caesar_cipher('What a string!', 5)
